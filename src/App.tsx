@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Select } from 'antd';
+import getChannels from './api';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+const { Option } = Select;
+
+export default function App(): React.ReactElement {
+    getChannels('hei');
+    return (
+        <Select
+            showSearch
+            placeholder="Select a person"
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+                if (!option) return false;
+                const children: string = option.children as unknown as string;
+                if (typeof option.children !== 'string') return false;
+                return (children as string).toLowerCase().indexOf(input.toLowerCase()) >= 0;
+            }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+            <Option>Jack</Option>
+        </Select>
 
-export default App;
+    );
+}
