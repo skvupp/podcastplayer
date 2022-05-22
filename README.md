@@ -1,6 +1,29 @@
-# Getting Started with Create React App
+# Getting Started with Podcastplayer
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Setup
+In the project directory, run:
+### `npm install`
+
+You can use the Podcastplayer to read RSS. If you want to, you can also use it to search available Podcasts from an API.
+To connect the podcastplayer to Podchaser: 
+1. Subscribe at https://www.podchaser.com/ and get a client_id and a client_secret. 
+2. To get a token, send a post request to the endpoint https://api.podchaser.com/graphql with a GraphQL body:
+```
+mutation {
+    requestAccessToken(
+        input: {
+            grant_type: CLIENT_CREDENTIALS
+            client_id: "[your client id]"
+            client_secret: "[your client secret]"
+        }
+    ) {
+        access_token
+       }
+   }`
+```
+5. Create .env file in the project directory and add the line `REACT_APP_PODCHASER_ACCESS_TOKEN=[your token]`
 
 ## Available Scripts
 
