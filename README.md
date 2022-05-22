@@ -1,15 +1,18 @@
 # Getting Started with Podcastplayer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Setup
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
+
 In the project directory, run:
 ### `npm install`
 
+
+### Add search functionality to Podcastplayer (optional)
 You can use the Podcastplayer to read RSS. If you want to, you can also use it to search available Podcasts from an API.
 To connect the podcastplayer to Podchaser: 
 1. Subscribe at https://www.podchaser.com/ and get a client_id and a client_secret. 
-2. To get a token, send a post request to the endpoint https://api.podchaser.com/graphql with a GraphQL body:
+2. To get a token, send a post request to the endpoint https://api.podchaser.com/graphql with GraphQL body:
 ```
 mutation {
     requestAccessToken(
