@@ -22,7 +22,6 @@ export default function App(): React.ReactElement {
             return;
         }
         const results = await getPodcastList(val);
-        console.log(results);
         if(!results) return;
         setChannels(results);
     };
