@@ -18,7 +18,6 @@ export async function getPodcastList(search: string): Promise<Channel[]>{
         }
     }}`;
     const Authorization = `Bearer ${process.env['REACT_APP_PODCHASER_ACCESS_TOKEN']}`;
-    console.log(Authorization);
 
     if(!Authorization) return [];
 

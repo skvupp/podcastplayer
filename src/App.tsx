@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Col, Input, Row } from 'antd';
+import {Button, Col, Input, Row} from 'antd';
 import {getPodcastList, getRSS} from './api';
 import {Channel} from './types/Channel';
 import SearchList from './Components/SearchList';
@@ -44,6 +44,7 @@ export default function App(): React.ReactElement {
                 >
                 </Input>
             </Row>
+            <Row><Button onClick={()=>onSelect('http://localhost:8080/rss')}>Testpod</Button></Row>
             <Row>
                 <SearchList channels={channels} onSelect={onSelect} visible={searchMode} />
                 <PodcastSite podcast={podcast} visible={!searchMode} />
