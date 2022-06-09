@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Image, Layout, List} from 'antd';
+import {Image, Layout, List, message} from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import {Content, Footer } from 'antd/es/layout/layout';
 import {Podcast} from '../types/Podcast';
@@ -7,13 +7,14 @@ import { stripHtml } from 'string-strip-html';
 
 import ReactAudioPlayer from 'react-audio-player';
 import {Episode} from '../types/Episode';
+import {TokenModal} from './TokenModal';
+import {getBase64Audio} from '../api';
 
 export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}) {
     const { podcast, visible } = props;
     const [audioConfig, setAudioConfig] = useState<{ src?: string; autoplay: boolean }>({ autoplay: false});
+    const [tokenModal, openModal] = useState<{ visible: boolean; item?: Episode }>({ visible: false });
     const { src, autoplay } = audioConfig;
-
-    console.log(podcast);
 
     useEffect(()=>{ setAudioConfig({ autoplay: false, src: undefined });}, [podcast]);
 
@@ -21,7 +22,6 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}
     const { title, image, description, items } = podcast;
 
     const playerElement = () => {
-        console.log(src);
         if(!src) return <></>;
         return (<ReactAudioPlayer
             src={src}
@@ -35,6 +35,24 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}
         if(!item.itunes_image.href) return image;
         return item.itunes_image.href;
     };
+
+    const playEpisode = async (item: Episode)=> {
+        if(item.itunes_episodeType !== 'protected') {
+            setAudioConfig({ src: item.enclosures[0].url, autoplay: true });
+            return;
+        }
+        if(localStorage.getItem(item.link)) {
+            try {
+                const src = await getBase64Audio(item);
+                setAudioConfig({ src, autoplay: true});
+            } catch (e) {
+                message.error((e as Error).message);
+            }
+            return;
+        }
+        openModal({ visible: true, item});
+    };
+
 
     return <><Layout>
         <Content><h2 style={{margin: '20px'}}>{title}</h2></Content>
@@ -50,13 +68,15 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}
         dataSource={items}
         renderItem={item => (
             <List.Item extra={<Image src={itemImageSrc(item)} style={{width: '150px'}}/>}
-                onClick={()=>setAudioConfig({ src: item.enclosures[0].url, autoplay: true })}>
+                onClick={()=>playEpisode(item)}>
                 <List.Item.Meta
                     title={item.title}
                     description={stripHtml(item.description).result}
                 />
             </List.Item>
         )}
-    /></>;
+    />
+    <TokenModal visible={tokenModal.visible}  item={tokenModal.item} onSuccess={playEpisode} onFail={console.log}/>
+    </>;
 
 }

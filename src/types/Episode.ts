@@ -1,7 +1,6 @@
 export interface Episode {
     title: string;
     description: string;
-    protected: string;
     link: string;
     author: string;
     published: number;
