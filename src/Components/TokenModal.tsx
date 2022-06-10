@@ -6,11 +6,11 @@ interface Props {
     visible: boolean;
     item?: Episode;
     onSuccess: (item: Episode)=>void;
-    onFail: ()=>void;
+    onClose: ()=>void;
 }
 
 export function TokenModal(props: Props): JSX.Element {
-    const { visible, item, onSuccess } = props;
+    const { visible, item, onSuccess, onClose } = props;
     if(!item) return <></>;
 
     const { link } = item;
@@ -21,17 +21,18 @@ export function TokenModal(props: Props): JSX.Element {
         onSuccess(item);
     };
 
-    return <Modal visible={visible} onOk={console.log}>
-        <Form name="nest-messages" onFinish={onFinish}>
+    return <Modal visible={visible} footer={false}>
+        <Form name="nest-messages" onFinish={onFinish} >
             <Form.Item required label="Lim inn kode" name="token">
                 <Input.TextArea />
             </Form.Item>
+            <p><a href={link} target="_blank" rel="noreferrer">Get code to open episode</a></p>
             <Form.Item>
+                <Button style={{marginRight: '20px'}} onClick={onClose}>Close</Button>
                 <Button type="primary" htmlType="submit">
-                    Submit
+                    Open
                 </Button>
             </Form.Item>
         </Form>
-        <a href={link} target="">Get code to open episode</a>
     </Modal>;
 }

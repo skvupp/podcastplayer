@@ -9,6 +9,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import {Episode} from '../types/Episode';
 import {TokenModal} from './TokenModal';
 import {getBase64Audio} from '../api';
+import {LockOutlined, UnlockOutlined} from '@ant-design/icons';
 
 export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}) {
     const { podcast, visible } = props;
@@ -53,6 +54,14 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}
         openModal({ visible: true, item});
     };
 
+    const avatar = (item: Episode)=> {
+        if(item.itunes_episodeType !== 'protected') return <></>;
+        if(!localStorage.getItem(item.link)) {
+            return <LockOutlined />;
+        }
+        return <UnlockOutlined />;
+    };
+
 
     return <><Layout>
         <Content><h2 style={{margin: '20px'}}>{title}</h2></Content>
@@ -61,22 +70,28 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}
             <Content style={{padding: '10px'}}>{stripHtml(description).result}</Content>
         </Layout>
         <Footer>{playerElement()}</Footer>
-    </Layout>;
+    </Layout>
     <List
         style={{width: '100%'}}
         itemLayout="horizontal"
         dataSource={items}
         renderItem={item => (
-            <List.Item extra={<Image src={itemImageSrc(item)} style={{width: '150px'}}/>}
-                onClick={()=>playEpisode(item)}>
-                <List.Item.Meta
-                    title={item.title}
-                    description={stripHtml(item.description).result}
-                />
-            </List.Item>
+            <a>
+                <List.Item extra={<Image src={itemImageSrc(item)} style={{width: '150px'}}/>}
+                    onClick={()=>playEpisode(item)} >
+                    <List.Item.Meta
+                        title={item.title}
+                        description={stripHtml(item.description).result}
+                        avatar={avatar(item)}
+                    />
+                </List.Item>
+            </a>
         )}
     />
-    <TokenModal visible={tokenModal.visible}  item={tokenModal.item} onSuccess={playEpisode} onFail={console.log}/>
+    <TokenModal visible={tokenModal.visible}  item={tokenModal.item} onSuccess={(item)=> {
+        openModal({ visible: false });
+        playEpisode(item);
+    }} onClose={()=>openModal({ visible: false })}/>
     </>;
 
 }
