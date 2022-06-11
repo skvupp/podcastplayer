@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Layout, List, message} from 'antd';
+import { Col, Image, Layout, List, message, Row} from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import {Content, Footer } from 'antd/es/layout/layout';
 import {Podcast} from '../types/Podcast';
@@ -11,8 +11,8 @@ import {TokenModal} from './TokenModal';
 import {getBase64Audio} from '../api';
 import {LockOutlined, UnlockOutlined} from '@ant-design/icons';
 
-export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}) {
-    const { podcast, visible } = props;
+export default function PodcastSite(props: {podcast?: Podcast; visible: boolean; rssUrl?: string}) {
+    const { podcast, visible, rssUrl } = props;
     const [audioConfig, setAudioConfig] = useState<{ src?: string; autoplay: boolean }>({ autoplay: false});
     const [tokenModal, openModal] = useState<{ visible: boolean; item?: Episode }>({ visible: false });
     const { src, autoplay } = audioConfig;
@@ -69,10 +69,16 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean}
             <Sider style={{backgroundColor: 'white'}}><Image src={image} /></Sider>
             <Content style={{padding: '10px'}}>{stripHtml(description).result}</Content>
         </Layout>
-        <Footer>{playerElement()}</Footer>
+        <Footer>
+            <Row><Col span={10}>
+                <a target="_blank" href={rssUrl} rel="noreferrer">
+                    <img width="30" alt="rss-link" src="https://cdn-icons-png.flaticon.com/512/37/37430.png?w=740&t=st=1654968202~exp=1654968802~hmac=678585ffbb0d81594ba4c3b055d496da738353860deaaa62d95701551281e3c7"/>
+                </a></Col>
+            <Col span={12}>{playerElement()}</Col>
+            </Row></Footer>
     </Layout>
     <List
-        style={{width: '100%'}}
+        style={{width: '100%' }}
         itemLayout="horizontal"
         dataSource={items}
         renderItem={item => (

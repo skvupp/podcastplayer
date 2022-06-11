@@ -8,16 +8,17 @@ import PodcastSite from './Components/PodcastSite';
 import {SearchField} from './Components/SearchField';
 import {Shortcuts} from './Components/Shortcuts';
 
-
 export default function App(): React.ReactElement {
     const [channels, setChannels] = useState<Channel[]>([]);
-    const [podcast, setPodcast] = useState<Podcast>();
+    const [podcastInfo, setPodcastInfo] = useState<{ podcast?: Podcast, rssUrl?: string }>({});
     const [searchMode, setSearchMode] = useState<boolean>(false);
 
-    const onSelect = async (rssUrl: string)=> {
+    const { podcast, rssUrl } = podcastInfo;
+
+    const onSelect = async (url: string)=> {
         try {
-            const podcast = await getRSS(rssUrl);
-            setPodcast(podcast);
+            const pod = await getRSS(url);
+            setPodcastInfo({podcast: pod, rssUrl: url});
             setSearchMode(false);
         } catch (e) {
             const error = e as Error;
@@ -36,7 +37,7 @@ export default function App(): React.ReactElement {
             </Row>
             <Row>
                 <SearchList channels={channels} onSelect={onSelect} visible={searchMode} />
-                <PodcastSite podcast={podcast} visible={!searchMode} />
+                <PodcastSite podcast={podcast} visible={!searchMode} rssUrl={rssUrl} />
             </Row>
         </Col>
     </Row>
