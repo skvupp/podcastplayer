@@ -21,7 +21,7 @@ export function TokenModal(props: Props): JSX.Element {
         onSuccess(item);
     };
 
-    return <Modal visible={visible} footer={false}>
+    return <Modal visible={visible} footer={false} closeIcon={false} closable={false} width={700}>
         <Form name="nest-messages" onFinish={onFinish} >
             <Form.Item required label="Lim inn kode" name="token">
                 <Input.TextArea />
