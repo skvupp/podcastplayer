@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Col, message, Row} from 'antd';
+import {Col, message, Row, Skeleton} from 'antd';
 import {getRSS} from './api';
 import {Channel} from './types/Channel';
 import SearchList from './Components/SearchList';
@@ -12,12 +12,15 @@ export default function App(): React.ReactElement {
     const [channels, setChannels] = useState<Channel[]>([]);
     const [podcastInfo, setPodcastInfo] = useState<{ podcast?: Podcast, rssUrl?: string }>({});
     const [searchMode, setSearchMode] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { podcast, rssUrl } = podcastInfo;
 
     const onSelect = async (url: string)=> {
         try {
+            setIsLoading(true);
             const pod = await getRSS(url);
+            setIsLoading(false);
             setPodcastInfo({podcast: pod, rssUrl: url});
             setSearchMode(false);
         } catch (e) {
@@ -36,8 +39,13 @@ export default function App(): React.ReactElement {
                 <SearchField setSearchMode={setSearchMode} setChannels={setChannels} />
             </Row>
             <Row>
-                <SearchList channels={channels} onSelect={onSelect} visible={searchMode} />
-                <PodcastSite podcast={podcast} visible={!searchMode} rssUrl={rssUrl} />
+                <>
+                    <SearchList channels={channels} onSelect={onSelect} visible={searchMode} />
+                    {(()=> {
+                        return !isLoading ? <PodcastSite podcast={podcast} visible={!searchMode} rssUrl={rssUrl}/> :
+                            <Skeleton/>;
+                    })()}
+                </>
             </Row>
         </Col>
     </Row>
