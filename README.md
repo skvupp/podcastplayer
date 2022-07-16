@@ -1,12 +1,23 @@
-# Getting Started with Podcastplayer
+# Podcastplayer with authorization
+This podcastplayer is a prototype for how to solve a podcasting problem: How to make money on your podcast without advertising.
 
+A podcast player is an application that reads RSS-files, presents the data and open sound files with a GET request.
+
+The idea is to put an authorization token on the request header. If the episodeType parameter is set to protected instead of full, 
+bonus or teaser, this player will prompt you and ask you to fill in an authorization code.
+
+If you don't have any token, you can click on the episode link. Once you got a token and open the episode, the token will be saved
+in localstorage under the name of the episode link. One link can have one token, so if you want multiple episodes to
+use the same token, they should use the same link.
+
+This is my suggestion on how to create podcasts with authorization requests. I encourage you to contribute and make your suggestion on how this can be done.
 
 ## Setup
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
-
-In the project directory, run:
+Clone the repository, go to the project directory and run:
 ### `npm install`
 
+You need a mock server with a RSS, to test the protected podcast with authorization. To set it up, follow instructions on
+[https://github.com/skvupp/podcastServer](https://github.com/skvupp/podcastServer)
 
 ### Add search functionality to Podcastplayer (optional)
 You can use the Podcastplayer to read RSS. If you want to, you can also use it to search available Podcasts from an API.
