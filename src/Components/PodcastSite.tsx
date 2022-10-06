@@ -12,7 +12,7 @@ import {getBase64Audio} from '../api';
 import {LockOutlined, UnlockOutlined} from '@ant-design/icons';
 
 export default function PodcastSite(props: {podcast?: Podcast; visible: boolean; rssUrl?: string}) {
-    const { podcast, visible, rssUrl } = props;
+    const { podcast, visible } = props;
     const [audioConfig, setAudioConfig] = useState<{ src?: string; autoplay: boolean }>({ autoplay: false});
     const [tokenModal, openModal] = useState<{ visible: boolean; item?: Episode }>({ visible: false });
     const { src, autoplay } = audioConfig;
