@@ -70,12 +70,8 @@ export default function PodcastSite(props: {podcast?: Podcast; visible: boolean;
             <Content style={{padding: '10px'}}>{stripHtml(description).result}</Content>
         </Layout>
         <Footer>
-            <Row><Col span={10}>
-                <a target="_blank" href={rssUrl} rel="noreferrer" style={{color: 'black', fontSize: 'large'}}>
-                    <img width="30" alt="rss-link" src="https://cdn-icons-png.flaticon.com/512/37/37430.png?w=740&t=st=1654968202~exp=1654968802~hmac=678585ffbb0d81594ba4c3b055d496da738353860deaaa62d95701551281e3c7"/>
-                    &nbsp;RSS
-                </a></Col>
-            <Col span={12}>{playerElement()}</Col>
+            <Row>
+                <Col span={12}>{playerElement()}</Col>
             </Row></Footer>
     </Layout>
     <List

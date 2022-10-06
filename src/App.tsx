@@ -36,7 +36,7 @@ export default function App(): React.ReactElement {
             <Shortcuts onSelect={onSelect} />
         </Col>
         <Col span={10} >
-            <Row><RssField onSelect={onSelect} /></Row>
+            <Row><RssField onSelect={onSelect} rssValue={rssUrl} /></Row>
             {(()=>process.env.REACT_APP_PODCHASER_ACCESS_TOKEN ? <Row>
                 <SearchField setSearchMode={setSearchMode} setChannels={setChannels}/>
             </Row> : <div style={{height: '40px'}}></div>)()}
