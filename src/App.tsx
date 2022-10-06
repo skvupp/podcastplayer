@@ -7,6 +7,7 @@ import {Podcast} from './types/Podcast';
 import PodcastSite from './Components/PodcastSite';
 import {SearchField} from './Components/SearchField';
 import {Shortcuts} from './Components/Shortcuts';
+import {RssField} from './Components/RssField';
 
 export default function App(): React.ReactElement {
     const [channels, setChannels] = useState<Channel[]>([]);
@@ -35,6 +36,7 @@ export default function App(): React.ReactElement {
             <Shortcuts onSelect={onSelect} />
         </Col>
         <Col span={10} >
+            <Row><RssField onSelect={onSelect} /></Row>
             {(()=>process.env.REACT_APP_PODCHASER_ACCESS_TOKEN ? <Row>
                 <SearchField setSearchMode={setSearchMode} setChannels={setChannels}/>
             </Row> : <div style={{height: '40px'}}></div>)()}
